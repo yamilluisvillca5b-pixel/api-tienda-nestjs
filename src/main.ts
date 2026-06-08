@@ -1,7 +1,5 @@
 import { ValidationPipe } from '@nestjs/common';
-
 import { NestFactory } from '@nestjs/core';
-
 import {
   SwaggerModule,
   DocumentBuilder,
@@ -10,7 +8,6 @@ import {
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-
   const app =
     await NestFactory.create(AppModule);
 
@@ -23,7 +20,7 @@ async function bootstrap() {
 
   const config =
     new DocumentBuilder()
-      .setTitle(' Tienda')
+      .setTitle('Tienda')
       .setDescription(
         'Documentación API NestJS',
       )
@@ -42,7 +39,10 @@ async function bootstrap() {
     document,
   );
 
-  await app.listen(3000);
+  const port =
+    parseInt(process.env.PORT || '3000', 10);
+
+  await app.listen(port, '0.0.0.0');
 }
 
 bootstrap();

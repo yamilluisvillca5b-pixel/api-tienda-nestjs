@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -11,24 +14,27 @@ import { OrdenProductoModule } from './orden-producto/orden-producto.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: '1234',
-      database: 'tienda',
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
+        type: 'postgres',
+        host: process.env.DB_HOST,
+        port: parseInt(process.env.DB_PORT || '5432', 10),
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+
+        ssl: {
+          rejectUnauthorized: false,
+        },
+
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
     ClientesModule,
     CategoriasModule,
     ProductosModule,
     OrdenesModule,
     OrdenProductoModule,
   ],
-
   controllers: [AppController],
   providers: [AppService],
 })
-
 export class AppModule {}
